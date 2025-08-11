@@ -4,49 +4,83 @@ export class Movement {
         this.moveBackward = false;
         this.moveLeft = false;
         this.moveRight = false;
-        this.boost = false;
+        this.moveUp = false;
+        this.moveDown = false;
+        this.boost = false; // Keep boost for now, can be triggered by other means if needed
 
-        document.addEventListener("keydown", (event) => this.onKeyDown(event));
-        document.addEventListener("keyup", (event) => this.onKeyUp(event));
+        this.isPanning = false;
+        this.lastPanPosition = { x: 0, y: 0 };
+
+        document.addEventListener("wheel", (event) => this.onWheel(event));
+        document.addEventListener("mousedown", (event) => this.onMouseDown(event));
+        document.addEventListener("mouseup", (event) => this.onMouseUp(event));
+        document.addEventListener("mousemove", (event) => this.onMouseMove(event));
     }
 
-    onKeyDown(event) {
-        const code = event.code;
-
-        if (code == "ArrowUp" || code == "KeyW") {
+    onWheel(event) {
+        if (event.deltaY < 0) {
+            // Scroll up -> move forward
             this.moveForward = true;
-        }
-        else if (code == "ArrowDown" || code == "KeyS") {
+            setTimeout(() => { this.moveForward = false; }, 50);
+        } else if (event.deltaY > 0) {
+            // Scroll down -> move backward
             this.moveBackward = true;
-        }
-        else if (code == "ArrowRight" || code == "KeyD") {
-            this.moveRight = true;
-        }
-        else if (code == "ArrowLeft" || code == "KeyA") {
-            this.moveLeft = true;
-        }
-        else if (code == "ShiftLeft") {
-            this.boost = true;
+            setTimeout(() => { this.moveBackward = false; }, 50);
         }
     }
 
-    onKeyUp(event) {
-        const code = event.code;
+    onMouseDown(event) {
+        // Middle mouse button for panning
+        if (event.button === 1) {
+            this.isPanning = true;
+            this.lastPanPosition.x = event.clientX;
+            this.lastPanPosition.y = event.clientY;
+        }
+    }
 
-        if (code == "ArrowUp" || code == "KeyW") {
-            this.moveForward = false;
+    onMouseUp(event) {
+        if (event.button === 1) {
+            this.isPanning = false;
+            this.moveLeft = false;
+            this.moveRight = false;
+            this.moveUp = false;
+            this.moveDown = false;
         }
-        else if (code == "ArrowDown" || code == "KeyS") {
-            this.moveBackward = false;
+    }
+
+    onMouseMove(event) {
+        if (!this.isPanning) {
+            return;
         }
-        else if (code == "ArrowRight" || code == "KeyD") {
+
+        const deltaX = event.clientX - this.lastPanPosition.x;
+        const deltaY = event.clientY - this.lastPanPosition.y;
+
+        // Horizontal panning
+        if (deltaX < -1) {
+            this.moveLeft = true;
+            this.moveRight = false;
+        } else if (deltaX > 1) {
+            this.moveRight = true;
+            this.moveLeft = false;
+        } else {
+            this.moveLeft = false;
             this.moveRight = false;
         }
-        else if (code == "ArrowLeft" || code == "KeyA") {
-            this.moveLeft = false;
+
+        // Vertical panning
+        if (deltaY < -1) {
+            this.moveUp = true;
+            this.moveDown = false;
+        } else if (deltaY > 1) {
+            this.moveDown = true;
+            this.moveUp = false;
+        } else {
+            this.moveUp = false;
+            this.moveDown = false;
         }
-        else if (code == "ShiftLeft") {
-            this.boost = false;
-        }
+
+        this.lastPanPosition.x = event.clientX;
+        this.lastPanPosition.y = event.clientY;
     }
 }

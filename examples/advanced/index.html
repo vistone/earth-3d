@@ -112,6 +112,14 @@
 							controls.moveRight(moveSpeed * deltaTime);
 						}
 
+						const up = new THREE.Vector3(0, 1, 0).applyQuaternion(camera.quaternion);
+						if (movement.moveUp) {
+                            camera.position.addScaledVector(up, moveSpeed * deltaTime);
+                        }
+                        else if (movement.moveDown) {
+                            camera.position.addScaledVector(up, -moveSpeed * deltaTime);
+                        }
+
 						renderer.render( scene, camera );
 			
 						stats.end();
