@@ -14,7 +14,7 @@ var NodeManagerOptionsDefault = {
     url: "https://kh.google.com/rt/earth/",
     nodeValidationHandler: function (node) { return false; },
     workerCount: 8,
-    workerPath: "./ResourcesWorker.js"
+    workerPath: "https://cdn.jsdelivr.net/npm/earth-3d@" + __PACKAGE_VERSION__ + "/dist/ResourcesWorker.js"
 };
 var NodeManager = /** @class */ (function () {
     function NodeManager(options) {

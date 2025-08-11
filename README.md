@@ -47,7 +47,7 @@ Notes:
 - Since nodes are stored in an octree fashion you cannot just filter the "end" node, all the nodes that belong to the same path at a previous level also need to be included.
 - Filtering should be performed with caution, having a big LatLonBox will likely result in a temporary ban from google since it will try and pull all the nodes at all levels.
 - The `nodeValidationHandler` method passes a `NodeHeader` which contains the node LatLonBox and OBB, they can be used to filter nodes based on any criteria.
-- When using this library the file `ResourcesWorker.js` needs to be copied manually into your distribution directory.
+- By default, the `ResourcesWorker.js` file is fetched from a CDN. If you are using the library in an environment without internet access or if you want to host the file yourself, you can override the `workerPath` option in the `NodeManager` constructor.
 - Nodes need to be filtered and fetched asynchronously, therefore, multiple calls to `getNodes` is expected in order to retrieve all the nodes for a query.
 
 ## TODO

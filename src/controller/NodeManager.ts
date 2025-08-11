@@ -5,6 +5,8 @@ import { Resources } from "./Resources";
 import { NodeHeader } from "../node/NodeHeader";
 import { BulkData } from "../bulk/BulkData";
 
+declare const __PACKAGE_VERSION__: string;
+
 /**
  * Node Manager options
  *
@@ -28,7 +30,7 @@ const NodeManagerOptionsDefault: NodeManagerOptions = {
     url: "https://kh.google.com/rt/earth/",
     nodeValidationHandler: (node: NodeHeader): boolean => {return false},
     workerCount: 8,
-    workerPath: "./ResourcesWorker.js"
+    workerPath: `https://cdn.jsdelivr.net/npm/earth-3d@${__PACKAGE_VERSION__}/dist/ResourcesWorker.js`
 }
 
 export class NodeManager {

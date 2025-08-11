@@ -8118,7 +8118,7 @@ var NodeManagerOptionsDefault = {
     return false;
   },
   workerCount: 8,
-  workerPath: "./ResourcesWorker.js"
+  workerPath: `https://cdn.jsdelivr.net/npm/earth-3d@${"2.0.6"}/dist/ResourcesWorker.js`
 };
 var NodeManager = class {
   constructor(options) {
